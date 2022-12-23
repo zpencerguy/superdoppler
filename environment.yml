@@ -60,8 +60,6 @@ dependencies:
     - greenlet==1.1.2
     - grpcio==1.44.0
     - grpcio-health-checking==1.43.0
-    - gspread==5.3.0
-    - gspread-dataframe==3.3.0
     - h11==0.13.0
     - httptools==0.4.0
     - humanfriendly==10.0
@@ -83,7 +81,6 @@ dependencies:
     - pandocfilters==1.5.0
     - pendulum==2.1.2
     - pep562==1.1
-    - pillow==9.2.0
     - pip==21.2.4
     - promise==2.3
     - protobuf==3.20.0
@@ -91,7 +88,6 @@ dependencies:
     - pyasn1-modules==0.2.8
     - pygments==2.11.2
     - pymssql==2.*
-    - pymongo==4.0.2
     - pyrsistent==0.18.1
     - python-dotenv
     - python-editor==1.0.4
@@ -101,8 +97,6 @@ dependencies:
     - requests-oauthlib==1.3.1
     - rsa==4.8
     - rx==1.6.1
-    - scikit-learn
-    - scipy
     - setuptools==58.0.4
     - slack-sdk
     - sniffio==1.2.0
