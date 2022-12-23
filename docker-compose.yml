@@ -1,0 +1,81 @@
+version: "3.3"
+
+services:
+  docker_postgresql:
+    image: postgres:11
+    container_name: docker_postgresql
+    environment:
+      POSTGRES_USER: "postgres_user"
+      POSTGRES_PASSWORD: "postgres_password"
+      POSTGRES_DB: "postgres_db"
+    networks:
+      - docker_network
+
+  docker_user_code:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_user_code
+    container_name: docker_user_code
+    image: docker_user_code_image
+    restart: always
+    environment:
+      DAGSTER_POSTGRES_USER: "postgres_user"
+      DAGSTER_POSTGRES_PASSWORD: "postgres_password"
+      DAGSTER_POSTGRES_DB: "postgres_db"
+      DAGSTER_CURRENT_IMAGE: "docker_user_code_image"
+    networks:
+      - docker_network
+
+  docker_dagit:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_dagster
+    entrypoint:
+      - dagit
+      - -h
+      - "0.0.0.0"
+      - -p
+      - "5555"
+      - -w
+      - workspace.yaml
+    container_name: docker_dagit
+    expose:
+      - "5555"
+    ports:
+      - "5555:5555"
+    environment:
+      DAGSTER_POSTGRES_USER: "postgres_user"
+      DAGSTER_POSTGRES_PASSWORD: "postgres_password"
+      DAGSTER_POSTGRES_DB: "postgres_db"
+    volumes: # Make docker client accessible so we can terminate containers from dagit
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - docker_network
+    depends_on:
+      - docker_postgresql
+      - docker_user_code
+
+  docker_daemon:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_dagster
+    entrypoint:
+      - dagster-daemon
+      - run
+    container_name: docker_daemon
+    restart: on-failure
+    environment:
+      DAGSTER_POSTGRES_USER: "postgres_user"
+      DAGSTER_POSTGRES_PASSWORD: "postgres_password"
+      DAGSTER_POSTGRES_DB: "postgres_db"
+    volumes: # Make docker client accessible so we can launch containers using host docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - docker_network
+    depends_on:
+      - docker_postgresql
+      - docker_user_code
+
+networks:
+  docker_network:
+    driver: bridge
