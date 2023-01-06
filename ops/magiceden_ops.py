@@ -10,7 +10,7 @@ import time
 )
 def get_collections(context):
     db = context.resources.db_resource
-    df = db.fetch_data_by_query("select distinct slug from public.collections")
+    df = db.fetch_data_by_query("select distinct slug from public.collection")
     yield Output(df['slug'].to_list())
 
 
