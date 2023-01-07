@@ -11,6 +11,7 @@ import time
 def get_collections(context):
     db = context.resources.db_resource
     df = db.fetch_data_by_query("select distinct slug from public.project")
+    context.log.info('Slugs from db: ', len(df))
     yield Output(df['slug'].to_list())
 
 
@@ -43,7 +44,7 @@ def get_collection_stats(context, symbols):
 def get_collection_activities(context):
     me = context.resources.magiceden_resource
     activities = me.call_activities_endpoint(context.op_config['collection'])
-    print(len(activities))
+    context.log.info('Activities from ME ', len(activities))
     yield Output(activities)
 
 
@@ -60,7 +61,7 @@ def get_token_data(context, mint_addresses):
 @op
 def get_top_sale_mint_address(context, activities):
     df = pd.json_normalize(activities)
-    top_sale = df.loc[df['type']=='buyNow'].sort_values('price', ascending=False).head(1)
+    top_sale = df.loc[df['type'] == 'buyNow'].sort_values('price', ascending=False).head(1)
     address = top_sale['tokenMint'].values[0]
     context.log.info(address)
     return address
@@ -78,6 +79,9 @@ def put_collection_stats(context, stats):
 
     df_ids = db.fetch_data_by_query("select slug, id from public.project")
     df_merged = df_stats.merge(df_ids, left_on='symbol', right_on='slug')
+    context.log.info("Merged record count: ", len(df_merged))
+    context.log.info(df_merged.head())
+
 
     yield AssetMaterialization(
         asset_key="MagicEden FloorPrices",
