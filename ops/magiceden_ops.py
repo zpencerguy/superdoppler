@@ -11,7 +11,7 @@ import time
 def get_collections(context):
     db = context.resources.db_resource
     df = db.fetch_data_by_query("select distinct slug from public.project")
-    context.log.info('Slugs from db: ', len(df))
+    context.log.info(f'Slugs from db: {len(df)}')
     yield Output(df['slug'].to_list())
 
 
@@ -44,7 +44,7 @@ def get_collection_stats(context, symbols):
 def get_collection_activities(context):
     me = context.resources.magiceden_resource
     activities = me.call_activities_endpoint(context.op_config['collection'])
-    context.log.info('Activities from ME ', len(activities))
+    context.log.info(f'Activities from ME {len(activities)}')
     yield Output(activities)
 
 
