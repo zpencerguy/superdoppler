@@ -100,7 +100,7 @@ def put_collection_stats(context, stats):
         base_stmt.format(
             dt,
             x['id'],
-            1,
+            2,
             float(x['floorPrice'] / 1000000000),
             'SOL'
         ) for i, x in df_merged.iterrows()
