@@ -9,8 +9,10 @@ def tweet_prediction(context):
     twitter = context.resources.twitter
     data = context.op_config['data']
     template = context.op_config['template']
+    context.log.info(template)
     for i in data:
         tweet_text = template.format(**i)
+        context.log.info(tweet_text)
         # if i['image']:
         #     try:
         #         tweet = twitter.post_tweet_with_uri_image(tweet_text, i['image'])
