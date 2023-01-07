@@ -79,7 +79,7 @@ def put_collection_stats(context, stats):
 
     df_ids = db.fetch_data_by_query("select slug, id from public.project")
     df_merged = df_stats.merge(df_ids, left_on='symbol', right_on='slug')
-    context.log.info("Merged record count: ", len(df_merged))
+    context.log.info(f"Merged record count: {len(df_merged)}")
     context.log.info(df_merged.head())
 
 
