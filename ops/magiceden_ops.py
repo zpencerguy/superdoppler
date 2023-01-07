@@ -82,15 +82,14 @@ def put_collection_stats(context, stats):
     context.log.info(f"Merged record count: {len(df_merged)}")
     context.log.info(df_merged.head())
 
-
     yield AssetMaterialization(
         asset_key="MagicEden FloorPrices",
         description="Collection floor pirces",
         metadata={
             "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "NumCollections": len(df_stats),
-            "HighestFloorCollection": df_stats.sort_values("floorPrice", ascending=False).head(1)['floorPrice'].values[0],
-            "HighestFloor": df_stats.sort_values("floorPrice", ascending=False).head(1)['floorPrice'].values[0]/1000000000
+            # "HighestFloorCollection": df_stats.sort_values("floorPrice", ascending=False).head(1)['floorPrice'].values[0],
+            # "HighestFloor": df_stats.sort_values("floorPrice", ascending=False).head(1)['floorPrice'].values[0]/1000000000
         },
     )
 
