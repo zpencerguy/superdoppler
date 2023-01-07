@@ -10,7 +10,7 @@ import time
 )
 def get_collections(context):
     db = context.resources.db_resource
-    df = db.fetch_data_by_query("select distinct slug from public.collection")
+    df = db.fetch_data_by_query("select distinct slug from public.project")
     yield Output(df['slug'].to_list())
 
 
@@ -76,7 +76,7 @@ def put_collection_stats(context, stats):
     print(df_stats.info())
     db = context.resources.db_resource
 
-    df_ids = db.fetch_data_by_query("select slug, id from public.collection")
+    df_ids = db.fetch_data_by_query("select slug, id from public.project")
     df_merged = df_stats.merge(df_ids, left_on='symbol', right_on='slug')
 
     yield AssetMaterialization(
