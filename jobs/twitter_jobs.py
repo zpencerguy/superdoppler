@@ -22,7 +22,7 @@ def prediction_tweet_job():
 
 
 @sensor(job=prediction_tweet_job, minimum_interval_seconds=60)
-def cardano_bot_sensor():
+def prediction_sensor():
     with build_resources(
             {"db_resource": db_resource.db_resource.configured({"database": "superdoppler"})}
     ) as resources:
