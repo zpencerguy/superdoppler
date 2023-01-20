@@ -1,6 +1,6 @@
 import time
 from datetime import timedelta, datetime
-from dagster import op, Output, Out, Any, AssetMaterialization
+from dagster import op, Output, Out, Any, AssetMaterialization, Any
 import pandas as pd
 
 
@@ -40,7 +40,7 @@ def get_expired_predictions(context):
 @op(
     description="Get prediction outcome based on MR API floor price",
     required_resource_keys={"magiceden"},
-    config_schema={"dfx": any}
+    config_schema={"dfx": Any}
 )
 def get_prediction_status(context):
     dfx = context.op_config['dfx']

@@ -1,4 +1,4 @@
-from dagster import job, ScheduleDefinition, DefaultScheduleStatus, sensor, RunRequest, build_resources, SkipReason
+from dagster import job, ScheduleDefinition, DefaultScheduleStatus, sensor, RunRequest, build_resources, SkipReason, Any
 from ops.prediction_ops import *
 from resources import db_resource, magiceden_resource
 
