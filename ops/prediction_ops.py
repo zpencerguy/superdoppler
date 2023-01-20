@@ -39,12 +39,9 @@ def get_expired_predictions(context):
 
 @op(
     description="Get prediction outcome based on MR API floor price",
-    required_resource_keys={"magiceden"},
-    config_schema={"dfx": Any}
+    required_resource_keys={"magiceden"}
 )
-def get_prediction_status(context):
-    dfx = context.op_config['dfx']
-    dfx = pd.DataFrame(dfx)
+def get_prediction_status(context, dfx):
     slugs = dfx['slug'].unique()
     me = context.resources.magiceden
     responses = []

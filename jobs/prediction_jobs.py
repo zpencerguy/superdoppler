@@ -21,17 +21,11 @@ from resources import db_resource, magiceden_resource
     resource_defs={
         "db_resource": db_resource.db_resource.configured({"database": "superdoppler"}),
         "magiceden": magiceden_resource.magiceden_resource
-    },
-    config={"ops": {
-        "get_prediction_status": {
-            "config": {
-                "dfx": {}
-            }
-        },
-    }}
+    }
 )
 def settle_prediction_job():
-    dfx = get_prediction_status()
+    dfx = get_expired_predictions()
+    dfx = get_prediction_status(dfx)
     complete = update_prediction_status(dfx)
 
 
@@ -53,15 +47,7 @@ def prediction_complete_sensor():
         if len(dfx) > 0:
             yield RunRequest(
                 run_key=str(datetime.utcnow()),
-                run_config={
-                    "ops": {
-                        "get_prediction_status": {
-                            "config": {
-                                "dfx": dfx.to_dict(),
-                            }
-                        }
-                    }
-                },
+                run_config={},
             )
         else:
             yield SkipReason('No recently completed predictions')
