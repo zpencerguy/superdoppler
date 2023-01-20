@@ -52,7 +52,7 @@ def prediction_complete_sensor():
         dfx = df.loc[df['expired'] <= df['timestamp']]
         if len(dfx) > 0:
             yield RunRequest(
-                # run_key=run_key,
+                run_key=str(datetime.utcnow()),
                 run_config={
                     "ops": {
                         "get_prediction_status": {
