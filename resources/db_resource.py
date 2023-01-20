@@ -57,25 +57,32 @@ class DatabaseConnection:
         return f"""INSERT INTO {table} ({', '.join(col for col in df.columns)}) 
         VALUES ({','.join('?' for x in range(len(df.columns.to_list())))})"""
 
+    def update_status(self, predict_id, predict_status):
+        """ update prediction status based on the prediction id """
+        sql = """UPDATE predict SET status = %s WHERE id = %s"""
+        conn = self.connection
+        updated_rows = 0
+        try:
+            # create a new cursor
+            cur = conn.cursor()
+            # execute the UPDATE  statement
+            cur.execute(sql, (predict_status, predict_id))
+            # get the number of updated rows
+            updated_rows = cur.rowcount
+            # Commit the changes to the database
+            conn.commit()
+            # Close communication with the PostgreSQL database
+            cur.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        return updated_rows
+
 
 @resource(config_schema={"database": str})
 def db_resource(init_context):
     database = init_context.resource_config["database"]
     return DatabaseConnection(database)
-
-
-  # id          Int           @id @default(autoincrement())
-  # createdAt   DateTime      @default(now()) @map(name: "created_at")
-  # platform    platforms     @relation(fields: [platformId], references: [id])
-  # platformId  Int           @map(name: "platform_id")
-  # address     String?
-  # name        String
-  # imageUrl    String?       @map(name: "image_url")
-  # slug        String?
-  # supply      Int?
-  # twitter     String?
-  # discord     String?
-  # website     String?
 
 
 if __name__ =='__main__':

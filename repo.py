@@ -2,6 +2,7 @@ from dagster import repository
 # from jobs.baddies_jobs import baddies_ai
 from jobs.magiceden_jobs import magiceden_stats_pipeline, magiceden_schedule
 from jobs.twitter_jobs import prediction_tweet_job, prediction_sensor
+from jobs.prediction_jobs import settle_prediction_job, settle_prediction_schedule
 
 
 @repository
@@ -17,5 +18,7 @@ def bots():
 def supperdoppler():
     return [
         magiceden_stats_pipeline,
-        magiceden_schedule
+        magiceden_schedule,
+        settle_prediction_schedule,
+        settle_prediction_job
     ]
